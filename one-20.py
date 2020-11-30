@@ -1,6 +1,7 @@
 import heapq
-# 1.给出两个整数 aa 和 bb , 求他们的和。
 
+
+# 1.给出两个整数 aa 和 bb , 求他们的和。
 
 
 class Solution:
@@ -54,6 +55,22 @@ class Solution:
     def kthLargestElement(self, n, nums):
         sortednums = sorted(nums, reverse=True)
         return sortednums[n - 1]
+
+    # 6合并两个有序升序的整数数组A和B变成一个新的数组。新数组也要有序。
+    # 直接写就行了，没啥技术含量
+    def mergeSortedArray(self, A, B):
+        if len(A) == 0:
+            return B
+        if len(B) == 0:
+            return A
+        ret = A + B
+        return (sorted(ret))
+
+    # 7设计一个算法，并编写代码来序列化和反序列化二叉树。将树写入一个文件被称为“序列化”，读取文件后重建同样的二叉树被称为“反序列化”。
+    # 如何反序列化或序列化二叉树是没有限制的，你只需要确保可以将二叉树序列化为一个字符串，并且可以将字符串反序列化为原来的树结构。
+
+
+
 
     # 517写一个程序来检测一个整数是不是丑数。丑数的定义是，只包含质因子2, 3, 5的正整数。比如6, 8就是丑数，但是14不是丑数因为他包含了质因子7。
     # 先求丑数，再求第n个
