@@ -1,4 +1,5 @@
-import heapq
+import heapq  # 丑数那个题用的,堆
+from collections import deque  #
 
 
 # 1.给出两个整数 aa 和 bb , 求他们的和。
@@ -68,9 +69,34 @@ class Solution:
 
     # 7设计一个算法，并编写代码来序列化和反序列化二叉树。将树写入一个文件被称为“序列化”，读取文件后重建同样的二叉树被称为“反序列化”。
     # 如何反序列化或序列化二叉树是没有限制的，你只需要确保可以将二叉树序列化为一个字符串，并且可以将字符串反序列化为原来的树结构。
+    # 第七题写在solution类外边了，单独的类
 
+    # 这个TreeNode是题目给定的已知，就按着人家这个tree去写
+    class TreeNode:
+        def __init__(self, val):
+            self.val = val
+            self.left = None
+            self.right = None
 
+        # 序列化，这步是BFS广度优先遍历，
+        #这个傻叉题。。题目要的return是{}包着的str，不是set
+        def serialize(self, root):
+            if root is None:
+                return "{}"
 
+            queue = [root]
+            index = 0
+            while index < len(queue):
+                if queue[index] is not None:
+                    queue.append(queue[index].left)
+                    queue.append(queue[index].right)
+                index += 1
+
+            while queue[-1] is None:
+                queue.pop()
+
+            return '{%s}' % ','.join([str(node.val) if node is not None else '#'
+                                      for node in queue])
 
     # 517写一个程序来检测一个整数是不是丑数。丑数的定义是，只包含质因子2, 3, 5的正整数。比如6, 8就是丑数，但是14不是丑数因为他包含了质因子7。
     # 先求丑数，再求第n个
@@ -88,10 +114,113 @@ class Solution:
             return m == 1
 
 
+# 二叉树，不过这个没啥用，根题目不相关，二叉树写的很好，人家不让用，要按着人家写好的去遍历
+class BinaryTree(object):
+    def __init__(self, data=None, left=None, right=None):
+        self.data = data
+        self.left = left
+        self.right = right
+
+    # 前序遍历，根→左→右
+    def preorder(self):
+        if self.data:
+            print(self.data)
+        if self.left:
+            self.left.preorder()
+        if self.right:
+            self.right.preorder()
+
+    # 中序遍历,左→根→右
+    def inorder(self):
+        if self.left is not None:
+            self.left.inorder()
+        if self.data is not None:
+            print(self.data)
+        if self.right is not None:
+            self.right.inorder()
+
+    # 后序遍历，左→右→根
+    def postorder(self):
+
+        if self.left is not None:
+            self.left.postorder()
+        if self.right is not None:
+            self.right.postorder()
+        if self.data is not None:
+            print(self.data, end=' ')
+
+    # 层序遍历
+    def levelorder(self):
+        # 返回某个节点的左孩子
+        def LChild_Of_Node(node):
+            return node.left if node.left else None
+
+        # 返回某个节点的右孩子
+        def RChild_Of_Node(node):
+            return node.right if node.right else None
+
+        # 层序遍历列表
+        level_order = []
+        # 是否添加根节点中的数据
+        if self.data:
+            level_order.append([self])
+
+        # 二叉树的高度
+        height = self.height()
+        if height >= 1:
+            # 对第二层及其以后的层数进行操作, 在level_order中添加节点而不是数据
+            for _ in range(2, height + 1):
+                level = []  # 该层的节点
+                for node in level_order[-1]:
+                    # 如果左孩子非空，则添加左孩子
+                    if LChild_Of_Node(node):
+                        level.append(LChild_Of_Node(node))
+                    # 如果右孩子非空，则添加右孩子
+                    if RChild_Of_Node(node):
+                        level.append(RChild_Of_Node(node))
+                # 如果该层非空，则添加该层
+                if level:
+                    level_order.append(level)
+
+            # 取出每层中的数据
+            for i in range(0, height):  # 层数
+                for index in range(len(level_order[i])):
+                    level_order[i][index] = level_order[i][index].data
+
+        return level_order
+
+    # 二叉树的高度
+    def height(self):
+        # 空的树高度为0, 只有root节点的树高度为1
+        if self.data is None:
+            return 0
+        elif self.left is None and self.right is None:
+            return 1
+        elif self.left is None and self.right is not None:
+            return 1 + self.right.height()
+        elif self.left is not None and self.right is None:
+            return 1 + self.left.height()
+        else:
+            return 1 + max(self.left.height(), self.right.height())
+
+    # 二叉树的叶子节点
+    def leaves(self):
+
+        if self.data is None:
+            return None
+        elif self.left is None and self.right is None:
+            print(self.data, end=' ')
+        elif self.left is None and self.right is not None:
+            self.right.leaves()
+        elif self.right is None and self.left is not None:
+            self.left.leaves()
+        else:
+            self.left.leaves()
+            self.right.leaves()
+
+
 ss = Solution()
-n = 1
-m = [1, 3, 2, 4]
-print(ss.kthLargestElement(n, m))
+
 # while (True):
 #     try:
 #         n = input('input your number\n')
