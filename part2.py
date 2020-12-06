@@ -34,17 +34,13 @@ class Solution:
     # 字符串转树
     def deserialize(self, data):
         data = data.strip('\n')
-
         if data == '{}':
             return None
-
         vals = data[1:-1].split(',')
-
         root = TreeNode(int(vals[0]))
         queue = [root]
         isLeftChild = True
         index = 0
-
         for val in vals[1:]:
             if val != '#':
                 node = TreeNode(int(val))
@@ -57,10 +53,16 @@ class Solution:
             if not isLeftChild:
                 index += 1
             isLeftChild = not isLeftChild
-
         return root
 
-    # write your code here
+    # 8给定一个字符串（以字符数组的形式给出）和一个偏移量，根据偏移量原地旋转字符串(从左向右旋转)。
+    # 这题也傻逼，输入是An array of char
+    # 这个题实属傻逼，没有为什么
+    def rotateString(self, s, offset):
+        length = len(s)
+        s = s + s
+        s = s[length - offset:length - offset + length]
+        return s
 
 
 node1 = TreeNode(1)
@@ -69,4 +71,7 @@ node3 = TreeNode(3)
 node1.left = node2
 node1.right = node3
 ss = Solution()
-
+strr = 'abcdefg'
+input = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+offset = 3
+print(ss.rotateString(input, offset))
