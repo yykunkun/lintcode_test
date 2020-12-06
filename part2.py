@@ -3,7 +3,7 @@
 # 第七题写在solution类外边了，单独的类
 
 # 这个TreeNode是题目给定的已知，就按着人家这个tree去写
-class TreNode:
+class TreeNode:
     def __init__(self, val):
         self.val = val
         self.left = None
@@ -11,12 +11,12 @@ class TreNode:
 
 
 class Solution:
-    # 序列化，这步是BFS广度优先遍历，
+    # 序列化，这步是BFS广度优先遍历，层序遍历，一层一层来
     # 这个傻叉题。。题目要的return是{}包着的str，不是set
+    # 树转字符串
     def serialize(self, root):
         if root is None:
             return "{}"
-
         queue = [root]
         index = 0
         while index < len(queue):
@@ -24,20 +24,49 @@ class Solution:
                 queue.append(queue[index].left)
                 queue.append(queue[index].right)
             index += 1
-
         while queue[-1] is None:
             queue.pop()
+        ret = '{%s}' % ','.join([str(node.val) if node is not None else '#'
+                                 for node in queue])
+        print(ret)
+        return ret
 
-        ret = '{'
-        for node in queue:
-            if node is not None:
-                ret += str(node.val) + ','
-            else:
-                ret += '#,'
-        ret = ret[:-2]
+    # 字符串转树
+    def deserialize(self, data):
+        data = data.strip('\n')
 
-        # return '{%s}' % ','.join([str(node.val) if node is not None else '#'
-        #                           for node in queue])
-        return ret + '}'
+        if data == '{}':
+            return None
 
-# write your code here
+        vals = data[1:-1].split(',')
+
+        root = TreeNode(int(vals[0]))
+        queue = [root]
+        isLeftChild = True
+        index = 0
+
+        for val in vals[1:]:
+            if val != '#':
+                node = TreeNode(int(val))
+                if isLeftChild:
+                    queue[index].left = node
+                else:
+                    queue[index].right = node
+                queue.append(node)
+
+            if not isLeftChild:
+                index += 1
+            isLeftChild = not isLeftChild
+
+        return root
+
+    # write your code here
+
+
+node1 = TreeNode(1)
+node2 = TreeNode(2)
+node3 = TreeNode(3)
+node1.left = node2
+node1.right = node3
+ss = Solution()
+
