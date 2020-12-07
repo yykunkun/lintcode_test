@@ -92,5 +92,29 @@ class Solution:
         return ret
 
 
-ss = Solution()
+# 12实现一个栈, 支持以下操作:
+# push(val) 将 val 压入栈
+# pop() 将栈顶元素弹出, 并返回这个弹出的元素
+# min() 返回栈中元素的最小值
+class MinStack:
 
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, number):
+        self.stack.append(number)
+        if not self.min_stack or self.min_stack[-1] >= number:
+            self.min_stack.append(number)
+
+    def pop(self):
+        num = self.stack.pop()
+        if num == self.min_stack[-1]:
+            self.min_stack.pop()
+        return num
+
+    def min(self):
+        return self.min_stack[-1]
+
+
+ss = Solution()
