@@ -57,21 +57,40 @@ class Solution:
 
     # 8给定一个字符串（以字符数组的形式给出）和一个偏移量，根据偏移量原地旋转字符串(从左向右旋转)。
     # 这题也傻逼，输入是An array of char
-    # 这个题实属傻逼，没有为什么
+    # 这题是个形参实参的问题
     def rotateString(self, s, offset):
-        length = len(s)
-        s = s + s
-        s = s[length - offset:length - offset + length]
-        return s
+        if len(s) > 0:
+            offset = offset % len(s)
+            temp = (s + s)[len(s) - offset:len(s) - offset + len(s)]
+            for i in range(len(temp)):
+                s[i] = temp[i]
+
+    # 11给定一个二叉查找树和范围[k1, k2]。按照升序返回给定范围内的节点值。
+    # 先遍历，BFS顺序排列，拿到排序树的顺序序列，然后筛选正确值，排序输出
+    def searchRange(self, root, k1, k2):
+        ret = []
+        totalOrder = []
+        queue = []
+        if root is None:
+            return ret
+        queue.append(root)
+        index = 0
+        while index < len(queue):
+            if queue[index] is not None:
+                queue.append(queue[index].left)
+                queue.append(queue[index].right)
+            index += 1
+        while queue[-1] is None:
+            queue.pop()
+        for i in range(len(queue)):
+            if queue[i] is not None:
+                totalOrder.append(queue[i].val)
+        for i in range(len(totalOrder)):
+            if totalOrder[i] >= k1 and totalOrder[i] <= k2:
+                ret.append(totalOrder[i])
+        ret.sort()
+        return ret
 
 
-node1 = TreeNode(1)
-node2 = TreeNode(2)
-node3 = TreeNode(3)
-node1.left = node2
-node1.right = node3
 ss = Solution()
-strr = 'abcdefg'
-input = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-offset = 3
-print(ss.rotateString(input, offset))
+
