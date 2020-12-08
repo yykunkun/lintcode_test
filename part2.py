@@ -91,6 +91,28 @@ class Solution:
         ret.sort()
         return ret
 
+    # 13对于一个给定的 source 字符串和一个 target 字符串，你应该在 source 字符串中找出 target
+    # 字符串出现的第一个位置(从0开始)。如果不存在，则返回 -1。
+    def strStr(self, source, target):
+        if len(source) is None or target is None:
+            return -1
+        elif len(source) < len(target):
+            return -1
+        elif len(source) == 0 or len(target) == 0:
+            return 0
+        index = 0
+        start = 0
+        while (start + index) < len(source):
+            print('start ' + str(start) + ' index ' + str(index))
+            if source[start + index] == target[index]:
+                index += 1
+                if index == len(target):
+                    return start
+            else:
+                index = 0
+                start += 1
+        return -1
+
 
 # 12实现一个栈, 支持以下操作:
 # push(val) 将 val 压入栈
@@ -118,3 +140,4 @@ class MinStack:
 
 
 ss = Solution()
+print(ss.strStr('abe', 'e'))
