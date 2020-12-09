@@ -10,6 +10,20 @@ class TreeNode:
         self.right = None
 
 
+# 先造这么一个栈
+# 这个栈给15题用的
+class Sstack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, number):
+        self.stack.append(number)
+
+    def pop(self):
+        num = self.stack.pop()
+        return num
+
+
 class Solution:
     # 序列化，这步是BFS广度优先遍历，层序遍历，一层一层来
     # 这个傻叉题。。题目要的return是{}包着的str，不是set
@@ -137,6 +151,41 @@ class Solution:
             return max
         return -1
 
+    # 15给定一个数字列表，返回其所有可能的排列。
+    # 这个是用递归做的,应该还有更好的方法
+    # 先手写个栈，把数都装进去，一个一个往外pop，ret最开始只有一个[]，每次pop出来一个数，
+    # 从ret里拿出来一项（叫a吧），pop出来的那个数，装到a里边的所有位置，装完的放起来，走完
+    # 一遍循环之后ret替换成新的
+    def permute(self, nums):
+        if nums is None:
+            return []
+        if len(nums) == 1:
+            return [[nums[0]]]
+        numStack = Sstack()
+        for num in nums:
+            numStack.push(num)
+        ret = [[]]
+        ret2 = []
+        while len(numStack.stack) != 0:
+            curr = numStack.pop()
+            for i in range(len(ret)):
+                temp1 = ret[i]
+                print(str(i) + ' *   ')
+                print(temp1)
+                for j in range(len(temp1) + 1):
+                    temp2 = []
+                    for num in temp1:
+                        temp2.append(num)
+                    temp2.insert(j, curr)
+                    print('temp2  ', end='')
+                    print(temp2)
+                    ret2.append(temp2)
+            ret = ret2
+            ret2 = []
+        for li in ret:
+            print(li)
+        return ret
+
 
 # 12实现一个栈, 支持以下操作:
 # push(val) 将 val 压入栈
@@ -163,6 +212,4 @@ class MinStack:
 
 
 ss = Solution()
-
-a = [3, 4, 5, 8, 8, 8, 8, 10, 13, 14]
-ss.binarySearch(a, 8)
+ss.permute([1, 2, 3, 4, 5])
