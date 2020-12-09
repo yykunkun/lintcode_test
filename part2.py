@@ -113,13 +113,36 @@ class Solution:
                 start += 1
         return -1
 
+    # 14给定一个排序的整数数组（升序）和一个要查找的整数target，用O(logn)的时间查找到target
+    # 第一次出现的下标（从0开始），如果target不存在于数组中，返回-1。
+    # 这里有个技巧，有重复值的时候就别return了，max=mid这个多走几遍，就能挤到前面来
+    def binarySearch(self, nums, target):
+        if nums is None:
+            return -1
+        if len(nums) == 1 and nums[0] != target:
+            return -1
+        min = 0
+        max = len(nums) - 1
+        while (min < max - 1):
+            mid = (min + max) // 2
+            print('min ' + str(min) + ' max ' + str(max) + ' mid ' + str(mid))
+
+            if nums[mid] < target:
+                min = mid
+            else:
+                max = mid
+        if nums[min] == target:
+            return min
+        if nums[max] == target:
+            return max
+        return -1
+
 
 # 12实现一个栈, 支持以下操作:
 # push(val) 将 val 压入栈
 # pop() 将栈顶元素弹出, 并返回这个弹出的元素
 # min() 返回栈中元素的最小值
 class MinStack:
-
     def __init__(self):
         self.stack = []
         self.min_stack = []
@@ -140,4 +163,6 @@ class MinStack:
 
 
 ss = Solution()
-print(ss.strStr('abe', 'e'))
+
+a = [3, 4, 5, 8, 8, 8, 8, 10, 13, 14]
+ss.binarySearch(a, 8)
