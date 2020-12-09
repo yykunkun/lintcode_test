@@ -156,6 +156,7 @@ class Solution:
     # 先手写个栈，把数都装进去，一个一个往外pop，ret最开始只有一个[]，每次pop出来一个数，
     # 从ret里拿出来一项（叫a吧），pop出来的那个数，装到a里边的所有位置，装完的放起来，走完
     # 一遍循环之后ret替换成新的
+    # 16题一样的，判断一下set里是不是出现过，去掉重复项即可
     def permute(self, nums):
         if nums is None:
             return []
@@ -179,7 +180,8 @@ class Solution:
                     temp2.insert(j, curr)
                     print('temp2  ', end='')
                     print(temp2)
-                    ret2.append(temp2)
+                    if not temp2 in ret2:
+                        ret2.append(temp2)
             ret = ret2
             ret2 = []
         for li in ret:
@@ -212,4 +214,4 @@ class MinStack:
 
 
 ss = Solution()
-ss.permute([1, 2, 3, 4, 5])
+ss.permute([1, 2, 4, 3])
