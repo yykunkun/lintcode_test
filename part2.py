@@ -191,6 +191,7 @@ class Solution:
     # 17给定一个含不同整数的集合，返回其所有的子集。
     # 先造一个stack,把nums装进去，然后一个一个push出来，把结果集里的元素一个一个拿出来，
     # 把push出来那个数和拿出来的结果放一块
+    # 18题一样的，先判断是不是有重复项，有重复项去掉即可
     def subsets(self, nums):
         if nums is None:
             return None
@@ -209,8 +210,11 @@ class Solution:
                     temp1.append(num1)
                     temp2.append(num1)
                 temp2.append(curr)
-                ret2.append(sorted(temp1))
-                ret2.append(sorted(temp2))
+                if temp1 not in ret2:
+                    ret2.append(sorted(temp1))
+                if temp2 not in ret2:
+                    ret2.append(sorted(temp2))
+
             ret = ret2
         return ret
 
@@ -240,3 +244,5 @@ class MinStack:
 
 
 ss = Solution()
+a = [0]
+print(ss.subsets(a))
