@@ -188,6 +188,32 @@ class Solution:
             print(li)
         return ret
 
+    # 17给定一个含不同整数的集合，返回其所有的子集。
+    # 先造一个stack,把nums装进去，然后一个一个push出来，把结果集里的元素一个一个拿出来，
+    # 把push出来那个数和拿出来的结果放一块
+    def subsets(self, nums):
+        if nums is None:
+            return None
+        ret = []
+        ret.append([])
+        numStuck = Sstack()
+        for num in nums:
+            numStuck.push(num)
+        while len(numStuck.stack) != 0:
+            curr = numStuck.pop()
+            ret2 = []
+            for sset in ret:
+                temp1 = []
+                temp2 = []
+                for num1 in sset:
+                    temp1.append(num1)
+                    temp2.append(num1)
+                temp2.append(curr)
+                ret2.append(sorted(temp1))
+                ret2.append(sorted(temp2))
+            ret = ret2
+        return ret
+
 
 # 12实现一个栈, 支持以下操作:
 # push(val) 将 val 压入栈
@@ -214,4 +240,3 @@ class MinStack:
 
 
 ss = Solution()
-ss.permute([1, 2, 4, 3])
