@@ -218,6 +218,48 @@ class Solution:
             ret = ret2
         return ret
 
+    # 没有19题
+    # 20扔 n 个骰子，向上面的数字之和为 S。给定 n，请列出所有可能的 S 值及其相应的概率。
+
+    # 这个是阶乘的公式
+    def factorial(self, n):
+        if n < 1:
+            return None
+        elif n == 1:
+            return 1
+        else:
+            return n * self.factorial(n - 1)
+
+    # upperC是大写C，组合的公式
+    # upperA是大写A，排列的公式
+    # 第一个参数大，是总量，第二个参数小，是取样量
+    # 默认m和n都是正整数，且m大于n，函数内部不再做判断
+    def upperA(self, m, n):
+        times = 1
+        ret = m
+        while times < n:
+            m = m - 1
+            ret = ret * m
+            times += 1
+        return ret
+
+    def upperC(self, m, n):
+        return (self.upperA(m, n)) / (self.factorial(n))
+
+    def dicesSum(self, n):
+        result = {}
+        dices = []
+        for i in range(n):
+            dices.append([1, 2, 3, 4, 5, 6])
+        ret = []
+        rettmp = []
+
+
+        return result
+
+
+# Write your code here
+
 
 # 12实现一个栈, 支持以下操作:
 # push(val) 将 val 压入栈
@@ -245,4 +287,4 @@ class MinStack:
 
 ss = Solution()
 a = [0]
-print(ss.subsets(a))
+print(ss.dicesSum(5))
