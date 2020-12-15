@@ -246,19 +246,86 @@ class Solution:
     def upperC(self, m, n):
         return (self.upperA(m, n)) / (self.factorial(n))
 
+    # 后来我想了想这个排列和组合的公式好像用不上
+    # 这个算法能行，但是会爆炸，要重新写个省时省力的，MMP
     def dicesSum(self, n):
-        result = {}
-        dices = []
-        for i in range(n):
-            dices.append([1, 2, 3, 4, 5, 6])
-        ret = []
-        rettmp = []
-
-
+        resulttmp = {}
+        resulttmp1 = []
+        for i1 in range(6):
+            temp1 = [i1 + 1]
+            resulttmp1.append(temp1)
+        index = 1
+        while index < n:
+            resulttmp2 = []
+            for i2 in range(len(resulttmp1)):
+                temp2 = resulttmp1[i2]
+                temp3 = []
+                for i3 in range(len(temp2)):
+                    temp3.append(temp2[i3])
+                for i4 in range(6):
+                    temp4 = []
+                    for i5 in range(len(temp3)):
+                        temp4.append(temp3[i5])
+                    temp4.append(i4 + 1)
+                    resulttmp2.append(temp4)
+            index += 1
+            resulttmp1 = resulttmp2
+        for i5 in range(len(resulttmp1)):
+            currDices = resulttmp1[i5]
+            currPointsSum = 0
+            for i6 in range(len(currDices)):
+                currPointsSum += currDices[i6]
+            if currPointsSum not in resulttmp.keys():
+                resulttmp[currPointsSum] = 1
+            else:
+                resulttmp[currPointsSum] += 1
+        # 到这里result的{}就做好了，后边就是题目要求的输出整理，问题都在这行以前
+        total = 6 ** n
+        result = []
+        for point, ratio in resulttmp.items():
+            print(str(point) + '  ' + str(ratio))
+            # resultEle = []
+            # resultEle.append(point)
+            # ratioEle = float(format(ratio / total, '.8f'))
+            # resultEle.append(ratioEle)
+            # result.append(resultEle)
+        # for i6 in range(len(result)):
+        #     print(result[i6][0], end='   ')
+        #     print(result[i6][1])
         return result
 
+    def dicesSum2(self, n):
+        ret = {}
+        for i in range(6):
+            ret[i + 1] = 1
+        if n == 1:
+            return ret
+        elif n > 1:
+            ret2 = {}
+            rettmp = self.dicesSum2(n - 1)
+            for points, ratio in rettmp.items():
+                for i in range(6):
+                    currPoints = points + i + 1
+                    if currPoints not in ret2.keys():
+                        ret2[currPoints] = rettmp[points]
+                    else:
+                        ret2[currPoints] = ret2[currPoints] + rettmp[points]
+            return ret2
 
-# Write your code here
+    # 14给定一个排序的整数数组（升序）和一个要查找的整数target，用O(logn)
+    # 的时间查找到target第一次出现的下标（从0开始），如果target不存在于数组中，返回 - 1。
+    def binarySearch(self, nums, target):
+        min = 0
+        max = len(nums) - 1
+        while min < max - 1:
+            mid = (min + max) // 2
+            if nums[mid] > target:
+                min = mid
+            elif nums[mid] < target:
+                max = mid
+            elif nums[mid] == target:
+                return mid
+        return -1
 
 
 # 12实现一个栈, 支持以下操作:
@@ -287,4 +354,9 @@ class MinStack:
 
 ss = Solution()
 a = [0]
-print(ss.dicesSum(5))
+
+retttt = ss.dicesSum2(4)
+for k, v in retttt.items():
+    print(str(k) + '  ' + str(v))
+print('*' * 25)
+ss.dicesSum(4)
