@@ -248,7 +248,7 @@ class Solution:
 
     # 后来我想了想这个排列和组合的公式好像用不上
     # 这个算法能行，但是会爆炸，要重新写个省时省力的，MMP
-    def dicesSum(self, n):
+    def dicesSum2(self, n):
         resulttmp = {}
         resulttmp1 = []
         for i1 in range(6):
@@ -294,7 +294,8 @@ class Solution:
         #     print(result[i6][1])
         return result
 
-    def dicesSum2(self, n):
+    # 20.这里用6式迭代做，不得不承认66的代码思维还是很牛逼的，上边这步做出dict形式的结果
+    def dicesSumDict(self, n):
         ret = {}
         for i in range(6):
             ret[i + 1] = 1
@@ -311,6 +312,18 @@ class Solution:
                     else:
                         ret2[currPoints] = ret2[currPoints] + rettmp[points]
             return ret2
+
+    # 这步把dict的结果化成[[]]形式的，因为题目要求return是[[]]形式的，dict的不认
+    def dicesSum(self, n):
+        ret = []
+        rettmp = self.dicesSumDict(n)
+        total = 6 ** n
+        for points, ratio in rettmp.items():
+            ratioEle = []
+            ratioEle.append(points)
+            ratioEle.append(ratio / total)
+            ret.append(ratioEle)
+        return ret
 
     # 14给定一个排序的整数数组（升序）和一个要查找的整数target，用O(logn)
     # 的时间查找到target第一次出现的下标（从0开始），如果target不存在于数组中，返回 - 1。
