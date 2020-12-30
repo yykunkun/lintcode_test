@@ -364,6 +364,9 @@ class MinStack:
     def min(self):
         return self.min_stack[-1]
 
+    
+
+
 
 ss = Solution()
 a = [0]
