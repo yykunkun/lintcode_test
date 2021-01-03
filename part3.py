@@ -29,8 +29,10 @@ class Solution:
         dd = (((YB - YA) * XP + (XA - XB) * YP + XB * YA - XA * YB) ** 2) / ((YB - YA) ** 2 + (XA - XB) ** 2)
         # 线段AB的平方记作ABAB
         ABAB = (XB - XA) ** 2 + (YB - YA) ** 2
+        print('ABAB '+str(ABAB))
         # 线段BP的平方记作BPBP
-        BPBP = (XP - XB) ** 2 + (YP - XB) ** 2
+        BPBP = (XP - XB) ** 2 + (YP - YB) ** 2
+        print('BPBP '+str(BPBP))
         R = rA if rA >= rB else rB
         r = rB if rA >= rB else rA
         print('R= ' + str(R))
@@ -39,20 +41,32 @@ class Solution:
         print('(R-r)平方 ' + str((R - r) ** 2))
         if cosBPA * cosBPA < 0:
             # 小于零，一钝一锐，AP在B的同侧，比两个端点
+            print('钝角')
             longer = ABAB if ABAB > BPBP else BPBP
             shorter = BPBP if ABAB > BPBP else ABAB
-            print(longer)
-            print(shorter)
+            print('最大距离平方 '+str(longer))
+            print('最小距离平方 '+str(shorter))
             if (R + r) ** 2 >= shorter and longer >= (R - r) ** 2:
                 return 1
             else:
                 return -1
-        if cosBPA * cosBPA >= 0:
+        if cosBPA * cosBPA > 0:
             # 两个锐角，比长的那个端点，和垂线段距离
+            print('锐角')
             longer = ABAB if ABAB >= BPBP else BPBP
             shorter = dd
-            print(longer)
-            print(shorter)
+            print('最大距离平方 '+str(longer))
+            print('最小距离平方 '+str(shorter))
+            if (R + r) ** 2 >= shorter and longer >= (R - r) ** 2:
+                return 1
+            else:
+                return -1
+        if cosBPA * cosBPA == 0:
+            print('直角')
+            longer = ABAB if ABAB > BPBP else BPBP
+            shorter = BPBP if ABAB > BPBP else ABAB
+            print('最大距离平方 '+str(longer))
+            print('最小距离平方 '+str(shorter))
             if (R + r) ** 2 >= shorter and longer >= (R - r) ** 2:
                 return 1
             else:
