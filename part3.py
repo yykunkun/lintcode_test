@@ -16,58 +16,76 @@ class Solution:
         print('圆B半径 ' + str(rB))
         XP, YP = position[6], position[7]
         print('P点坐标 ' + str(XP) + ' ' + str(YP))
-        Xab, Yab = XB - XA, YB - YA  # 向量AB坐标
-        Xap, Yap = XP - XA, YP - YA  # 向量AP坐标
-        Xpa, Ypa = XA - XP, YA - YP  # 向量PA坐标
-        Xpb, Ypb = XB - XP, YB - YP  # 向量PB坐标
-        cosBAP = Xab * Xap + Yab * Yap
-        cosBPA = Xpa * Xpb + Ypa * Ypb
-        # 直线AB的方程
-        # (XB-XA)y=(YB-YA)x+XBYA-XAYB
-        # (YB-YA)x+(XA-XB)y+XBYA-XAYB=0
-        # P到AB距离记作d,d的平方记作dd
-        dd = (((YB - YA) * XP + (XA - XB) * YP + XB * YA - XA * YB) ** 2) / ((YB - YA) ** 2 + (XA - XB) ** 2)
-        # 线段AB的平方记作ABAB
-        ABAB = (XB - XA) ** 2 + (YB - YA) ** 2
-        print('ABAB '+str(ABAB))
-        # 线段BP的平方记作BPBP
-        BPBP = (XP - XB) ** 2 + (YP - YB) ** 2
-        print('BPBP '+str(BPBP))
         R = rA if rA >= rB else rB
         r = rB if rA >= rB else rA
         print('R= ' + str(R))
         print('r= ' + str(r))
         print('(R+r)平方 ' + str((R + r) ** 2))
         print('(R-r)平方 ' + str((R - r) ** 2))
-        if cosBPA * cosBPA < 0:
-            # 小于零，一钝一锐，AP在B的同侧，比两个端点
-            print('钝角')
-            longer = ABAB if ABAB > BPBP else BPBP
-            shorter = BPBP if ABAB > BPBP else ABAB
-            print('最大距离平方 '+str(longer))
-            print('最小距离平方 '+str(shorter))
-            if (R + r) ** 2 >= shorter and longer >= (R - r) ** 2:
+
+        if XA == XP and YA == YP:
+            if ((XA - XB) ** 2 + (YA - YB) ** 2 >= (R - r) ** 2) and ((XA - XB) ** 2 + (YA - YB) ** 2 <= (R + r) ** 2):
                 return 1
             else:
                 return -1
-        if cosBPA * cosBPA > 0:
-            # 两个锐角，比长的那个端点，和垂线段距离
-            print('锐角')
-            longer = ABAB if ABAB >= BPBP else BPBP
-            shorter = dd
-            print('最大距离平方 '+str(longer))
-            print('最小距离平方 '+str(shorter))
-            if (R + r) ** 2 >= shorter and longer >= (R - r) ** 2:
-                return 1
-            else:
-                return -1
-        if cosBPA * cosBPA == 0:
-            print('直角')
-            longer = ABAB if ABAB > BPBP else BPBP
-            shorter = BPBP if ABAB > BPBP else ABAB
-            print('最大距离平方 '+str(longer))
-            print('最小距离平方 '+str(shorter))
-            if (R + r) ** 2 >= shorter and longer >= (R - r) ** 2:
-                return 1
-            else:
-                return -1
+        else:
+            Xab, Yab = XB - XA, YB - YA  # 向量AB坐标
+            Xap, Yap = XP - XA, YP - YA  # 向量AP坐标
+            Xpa, Ypa = XA - XP, YA - YP  # 向量PA坐标
+            Xpb, Ypb = XB - XP, YB - YP  # 向量PB坐标
+            cosBAP = Xab * Xap + Yab * Yap
+            cosBPA = Xpa * Xpb + Ypa * Ypb
+            # 直线AP的方程
+            # (XP-XA)y=(YP-YA)x+XPYA-XAYP
+            # (YP-YA)x+(XA-XP)y+XPYA-XAYP=0
+            # P到AB距离记作d,d的平方记作dd
+            dd = (((YP - YA) * XB + (XA - XP) * YB + XP * YA - XA * YP) ** 2) / ((YP - YA) ** 2 + (XA - XP) ** 2)
+            print('dd ' + str(dd))
+            # 线段AB的平方记作ABAB
+            ABAB = (XB - XA) ** 2 + (YB - YA) ** 2
+            print('ABAB ' + str(ABAB))
+            # 线段BP的平方记作BPBP
+            BPBP = (XP - XB) ** 2 + (YP - YB) ** 2
+            print('BPBP ' + str(BPBP))
+
+            if cosBPA * cosBAP < 0:
+                # 小于零，一钝一锐，AP在B的同侧，比两个端点
+                print('钝角')
+                longer = ABAB if ABAB > BPBP else BPBP
+                shorter = BPBP if ABAB > BPBP else ABAB
+                print('最大距离平方 ' + str(longer))
+                print('最小距离平方 ' + str(shorter))
+                if ((R + r) ** 2 >= shorter and shorter >= (R - r) ** 2) or (
+                        (R + r) ** 2 >= longer and longer >= (R - r) ** 2):
+                    return 1
+                else:
+                    return -1
+            if cosBPA * cosBAP > 0:
+                # 两个锐角，比长的那个端点，和垂线段距离
+                print('锐角')
+                longer = ABAB if ABAB >= BPBP else BPBP
+                shorter = dd
+                print('最大距离平方 ' + str(longer))
+                print('最小距离平方 ' + str(shorter))
+                if ((R + r) ** 2 >= shorter and shorter >= (R - r) ** 2) or (
+                        (R + r) ** 2 >= longer and longer >= (R - r) ** 2):
+                    return 1
+                else:
+                    return -1
+            if cosBPA * cosBAP == 0:
+                print('直角')
+                longer = ABAB if ABAB > BPBP else BPBP
+                shorter = BPBP if ABAB > BPBP else ABAB
+                print('最大距离平方 ' + str(longer))
+                print('最小距离平方 ' + str(shorter))
+                if ((R + r) ** 2 >= shorter and shorter >= (R - r) ** 2) or (
+                        (R + r) ** 2 >= longer and longer >= (R - r) ** 2):
+                    return 1
+                else:
+                    return -1
+
+
+ss = Solution()
+circles = [0, 2, 0.1, 1, 1, 0.1, 0, 2]
+
+print(ss.IfIntersect(circles))
