@@ -84,8 +84,25 @@ class Solution:
                 else:
                     return -1
 
+    # 22给定一个列表，该列表中的每个元素要么是个列表，要么是整数。将其变成一个只包含整数的简单列表。
+    def flatten(self, nestedList):
+        inputStr1 = str(nestedList)
+        inputStr2 = ''
+        for ch in inputStr1:
+            if ch != '[' and ch != ']':
+                inputStr2 += ch
+        # 明天问问傻六这个空格咋出来的
+        inputStr3 = inputStr2.replace(' ', '')
+        inputNums = list(inputStr3.split(','))
+        print(inputNums)
+        ret = []
+        for num in inputNums:
+            if len(num) > 0:
+                ret.append(int(num))
+        return ret
+
 
 ss = Solution()
-circles = [0, 2, 0.1, 1, 1, 0.1, 0, 2]
+circles = [[], []]
 
-print(ss.IfIntersect(circles))
+ss.flatten(circles)
