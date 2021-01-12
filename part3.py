@@ -96,7 +96,6 @@ class Solution:
         # 明天问问傻六这个空格咋出来的
         inputStr3 = inputStr2.replace(' ', '')
         inputNums = list(inputStr3.split(','))
-        print(inputNums)
         ret = []
         for num in inputNums:
             if len(num) > 0:
@@ -107,28 +106,43 @@ class Solution:
 # 24LFU是一个著名的缓存算法对于容量为k的缓存，如果缓存已满，并且需要逐出其中的密钥，
 # 则最少使用的密钥将被踢出。实现LFU中的set 和 get
 
-class LinkedNode:
-    def __init__(self, key=None, val=None, next=None):
-        self.key = key
-        self.val = val
-        self.next = next
+from collections import OrderedDict
 
 
-class LFUCache:
-    """
-    @param: capacity: An integer
-    """
-
+class LRUCache:
     def __init__(self, capacity):
-        pass
-
-    def set(self, key, value):
-        pass
+        self.capacity = capacity
+        self.cache = OrderedDict()
 
     def get(self, key):
-        pass
+        if key not in self.cache:
+            print(self.cache, end=' ')
+            print('get ' + '-1')
+            return -1
+        value = self.cache.pop(key)
+        self.cache[key] = value
+        print(self.cache, end=' ')
+        print('get ' + str(value))
+        return value
+
+    def set(self, key, value):
+        if key in self.cache:
+            self.cache.pop(key)
+        elif len(self.cache) == self.capacity:
+            self.cache.popitem(last=False)
+        self.cache[key] = value
+        print(self.cache)
 
 
-ss = Solution()
-inputData = [[], []]
-ss.flatten(inputData)
+lru = LRUCache(3)
+lru.set(2, 2)
+lru.set(1, 1)
+lru.get(2)
+lru.get(1)
+lru.get(2)
+lru.set(3, 3)
+lru.set(4, 4)
+lru.get(3)
+lru.get(2)
+lru.get(1)
+lru.get(4)
