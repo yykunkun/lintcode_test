@@ -91,6 +91,8 @@ class Solution:
         for ch in inputStr1:
             if ch != '[' and ch != ']':
                 inputStr2 += ch
+            if ch == ' ':
+                print('有个空格！！！')
         # 明天问问傻六这个空格咋出来的
         inputStr3 = inputStr2.replace(' ', '')
         inputNums = list(inputStr3.split(','))
@@ -102,7 +104,31 @@ class Solution:
         return ret
 
 
-ss = Solution()
-circles = [[], []]
+# 24LFU是一个著名的缓存算法对于容量为k的缓存，如果缓存已满，并且需要逐出其中的密钥，
+# 则最少使用的密钥将被踢出。实现LFU中的set 和 get
 
-ss.flatten(circles)
+class LinkedNode:
+    def __init__(self, key=None, val=None, next=None):
+        self.key = key
+        self.val = val
+        self.next = next
+
+
+class LFUCache:
+    """
+    @param: capacity: An integer
+    """
+
+    def __init__(self, capacity):
+        pass
+
+    def set(self, key, value):
+        pass
+
+    def get(self, key):
+        pass
+
+
+ss = Solution()
+inputData = [[], []]
+ss.flatten(inputData)
