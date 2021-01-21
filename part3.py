@@ -106,43 +106,220 @@ class Solution:
 # 24LFU是一个著名的缓存算法对于容量为k的缓存，如果缓存已满，并且需要逐出其中的密钥，
 # 则最少使用的密钥将被踢出。实现LFU中的set 和 get
 
-from collections import OrderedDict
+
+class Node:
+    def __init__(self, k, v):
+        self.key = k
+        self.value = v
+        self.next = None
 
 
 class LRUCache:
-    def __init__(self, capacity):
-        self.capacity = capacity
-        self.cache = OrderedDict()
+    def __init__(self, len):
+        self.headNode = None
+        self.len = len
 
-    def get(self, key):
-        if key not in self.cache:
-            print(self.cache, end=' ')
-            print('get ' + '-1')
+    def getLength(self):
+        if self.headNode == None:
+            return 0
+        else:
+            current = self.headNode
+            length = 1
+            while current.next != None:
+                length += 1
+                current = current.next
+            return length
+
+    def getKeys(self):
+        if self.headNode == None:
+            return []
+        else:
+            ret = []
+            current = self.headNode
+            ret.append(current.key)
+            while current.next != None:
+                current = current.next
+                ret.append(current.key)
+            return ret
+
+    def showall(self):
+        if self.headNode == None:
+            print('None')
+        else:
+            node = self.headNode
+            print(str(node.key) + ': ' + str(node.value), end=', ')
+            while node.next != None:
+                node = node.next
+                print(str(node.key) + ': ' + str(node.value), end=', ')
+            print()
+
+    def set(self, k, v):
+        node = Node(k, v)
+        if self.headNode == None:
+            self.headNode = node
+        else:
+            keys = self.getKeys()
+
+            if k not in keys:
+
+                if self.getLength() < self.len:
+                    current = self.headNode
+                    while current.next != None:
+                        current = current.next
+                    current.next = node
+                else:
+                    current = self.headNode
+                    if current.next == None:
+                        self.headNode = node
+                    else:
+                        currentMinus1 = None
+                        while current.next!= None:
+                            currentMinus1 =current
+                            current=current.next
+                        else:
+                            currentMinus1 .next = node
+
+            elif k in keys:
+                current = self.headNode
+                if current.key == k:
+                    current.value = v
+                else:
+                    while current.next != None:
+                        current = current.next
+                        if current.key == k:
+                            current.value = v
+                            break
+
+            self.showall()
+
+    def get(self, k):
+        if self.headNode == None:
+            print('*' * 30)
+            print(' get -1')
+            print('*' * 30)
             return -1
-        value = self.cache.pop(key)
-        self.cache[key] = value
-        print(self.cache, end=' ')
-        print('get ' + str(value))
-        return value
+        else:
+            keys = self.getKeys()
+            if len(keys) == 0:
+                print('*' * 30)
+                print(' get -1')
+                print('*' * 30)
+                return -1
+            else:
+                if k not in keys:
+                    print('*' * 30)
+                    print(' get -1')
+                    print('*' * 30)
+                    return -1
+                else:
+                    if self.headNode.key == k:
+                        print('*' * 30)
+                        print(' get ' + str(self.headNode.value))
+                        print('*' * 30)
+                        return self.headNode.value
+                    else:
+                        ret = None
+                        selectedNode = None
+                        currentPlus1 = None
+                        currentMinus1 = None
+                        current = self.headNode
+                        if current.key == k:
+                            ret = current.value
+                        else:
+                            while current.next != None:
+                                current = current.next
+                                if current.key == k:
+                                    selectedNode = current
+                                    ret = current.value
+                                    if current.next == None:
+                                        currentPlus1 = None
+                                    else:
+                                        currentPlus1 = current.next
+                                    break
+                            current = self.headNode
+                            while current.next != None:
+                                if current.next == selectedNode:
+                                    currentMinus1 = current
+                                    break
+                                else:
+                                    current = current.next
 
-    def set(self, key, value):
-        if key in self.cache:
-            self.cache.pop(key)
-        elif len(self.cache) == self.capacity:
-            self.cache.popitem(last=False)
-        self.cache[key] = value
-        print(self.cache)
+                            temp = self.headNode
+                            self.headNode = selectedNode
+                            self.headNode.next = temp
+                            currentMinus1.next = currentPlus1
+                        print('*' * 30)
+                        print(' get ' + str(ret))
+                        print('*' * 30)
+                        return ret
 
 
-lru = LRUCache(3)
-lru.set(2, 2)
-lru.set(1, 1)
-lru.get(2)
-lru.get(1)
-lru.get(2)
-lru.set(3, 3)
-lru.set(4, 4)
-lru.get(3)
-lru.get(2)
-lru.get(1)
-lru.get(4)
+l=LRUCache(3)
+l.set(1,10)
+l.set(2,20)
+l.set(3,30)
+l.get(1)
+l.showall()
+l.set(4,40)
+l.get(4)
+l.showall()
+l.get(3)
+l.showall()
+l.get(2)
+l.showall()
+l.get(1)
+l.showall()
+l.set(5,50)
+l.get(1)
+l.showall()
+l.get(2)
+l.showall()
+l.get(3)
+l.showall()
+l.get(4)
+l.showall()
+l.get(5)
+l.showall()
+
+
+
+
+
+from collections import OrderedDict
+
+# class LRUCache:
+#     def __init__(self, capacity):
+#         self.capacity = capacity
+#         self.cache = OrderedDict()
+#
+#     def get(self, key):
+#         if key not in self.cache:
+#             print(self.cache, end=' ')
+#             print('get ' + '-1')
+#             return -1
+#         value = self.cache.pop(key)
+#         self.cache[key] = value
+#         print(self.cache, end=' ')
+#         print('get ' + str(value))
+#         return value
+#
+#     def set(self, key, value):
+#         if key in self.cache:
+#             self.cache.pop(key)
+#         elif len(self.cache) == self.capacity:
+#             self.cache.popitem(last=False)
+#         self.cache[key] = value
+#         print(self.cache)
+
+# lru = LRUCache(3)
+# lru.set(2, 2)
+# lru.set(1, 1)
+# lru.get(2)
+# lru.get(1)
+# lru.get(2)
+# lru.set(3, 3)
+# lru.set(4, 4)
+# lru.get(3)
+# lru.get(2)
+# lru.get(1)
+# lru.get(4)
