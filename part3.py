@@ -254,72 +254,9 @@ class LRUCache:
                         return ret
 
 
-l=LRUCache(3)
-l.set(1,10)
-l.set(2,20)
-l.set(3,30)
-l.get(1)
-l.showall()
-l.set(4,40)
-l.get(4)
-l.showall()
-l.get(3)
-l.showall()
-l.get(2)
-l.showall()
-l.get(1)
-l.showall()
-l.set(5,50)
-l.get(1)
-l.showall()
-l.get(2)
-l.showall()
-l.get(3)
-l.showall()
-l.get(4)
-l.showall()
-l.get(5)
-l.showall()
 
 
 
 
 
-from collections import OrderedDict
 
-# class LRUCache:
-#     def __init__(self, capacity):
-#         self.capacity = capacity
-#         self.cache = OrderedDict()
-#
-#     def get(self, key):
-#         if key not in self.cache:
-#             print(self.cache, end=' ')
-#             print('get ' + '-1')
-#             return -1
-#         value = self.cache.pop(key)
-#         self.cache[key] = value
-#         print(self.cache, end=' ')
-#         print('get ' + str(value))
-#         return value
-#
-#     def set(self, key, value):
-#         if key in self.cache:
-#             self.cache.pop(key)
-#         elif len(self.cache) == self.capacity:
-#             self.cache.popitem(last=False)
-#         self.cache[key] = value
-#         print(self.cache)
-
-# lru = LRUCache(3)
-# lru.set(2, 2)
-# lru.set(1, 1)
-# lru.get(2)
-# lru.get(1)
-# lru.get(2)
-# lru.set(3, 3)
-# lru.set(4, 4)
-# lru.get(3)
-# lru.get(2)
-# lru.get(1)
-# lru.get(4)
